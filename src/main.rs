@@ -6,27 +6,28 @@ enum TreeNode {
 fn increase_tabs(s: String) -> String {
     let mut res: String = String::new();
     for line in s.lines() {
-        res = res + "\t" + line + "\n";
+        res = res + "    " + line + "\n";
     }
-    //println!("Incr {}", res);
     return res;
 }
 
 impl TreeNode {
     fn to_string(&self) -> String {
         return match self {
-            TreeNode::Join {left, right} => increase_tabs(left.to_string() + "\n" + &right.to_string() + "\n"),
-            TreeNode::Value {value} => value.to_string()  
+            TreeNode::Join {freq, left, right} => freq.to_string() + ":\n" + &increase_tabs(left.to_string() + "\n" + &right.to_string() + "\n"),
+            TreeNode::Value {freq, value} => freq.to_string() + ":" + &value.to_string()
         };
     }
 }
 
 fn main() {
     let tree = TreeNode::Join {
-        left: Box::new(TreeNode::Value {value: 69}),
+        freq: 123,
+        left: Box::new(TreeNode::Value {freq:42, value: 69}),
         right: Box::new(TreeNode::Join {
-            left: Box::new(TreeNode::Value {value: 34}),
-            right: Box::new(TreeNode::Value {value: 35})
+            freq: 96,
+            left: Box::new(TreeNode::Value {freq: 35, value: 34}),
+            right: Box::new(TreeNode::Value {freq: 34, value: 35})
         })
     };
     println!("{}", tree.to_string());
